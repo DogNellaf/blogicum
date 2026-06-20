@@ -1,0 +1,2 @@
+# blogicum
+Social django network

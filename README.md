@@ -1,127 +1,127 @@
 # Blogicum
 
-Социальная сеть для публикации личных дневников на Django. Пользователи могут
-регистрироваться, вести блог, публиковать посты с изображениями, привязывать их
-к категориям и локациям, комментировать чужие записи и редактировать свой
-профиль. Посты можно отправлять в отложенную публикацию, снимать с публикации и
-группировать по категориям.
+> 🇬🇧 English | [🇷🇺 Русский](README.ru.md)
 
-Проект доведён до рабочего состояния: исправлены ошибки, код отрефакторен, добавлено покрытие тестами и админ-панель.
+A social network for personal diary publishing built with Django. Users can register, run a blog, publish posts with images, attach them to categories and locations, comment on others' posts, and edit their profile. Posts support scheduled publishing, unpublishing, and category grouping.
 
-## Возможности
+## Features
 
-- Регистрация, аутентификация, смена и восстановление пароля.
-- Создание, редактирование и удаление публикаций (с подтверждением удаления).
-- Загрузка изображения к публикации.
-- Отложенная публикация (дата в будущем) и снятие постов с публикации.
-- Категории и локации публикаций; страница отдельной категории.
-- Комментарии: добавление, редактирование и удаление автором.
-- Счётчик комментариев под каждым постом.
-- Страница профиля пользователя со списком его публикаций.
-- Пагинация (10 публикаций на страницу).
-- Кастомные страницы ошибок 403 (CSRF), 404 и 500.
-- Статичные страницы «О проекте» и «Наши правила».
-- Админ-панель для всех моделей.
+- Registration, authentication, password change and recovery
+- Create, edit, and delete posts (with deletion confirmation)
+- Image upload for posts
+- Scheduled publishing (future date) and unpublishing
+- Post categories and locations; dedicated category pages
+- Comments: add, edit, and delete by the author
+- Comment counter on each post
+- User profile page with a list of their posts
+- Pagination (10 posts per page)
+- Custom error pages for 403 (CSRF), 404, and 500
+- Static "About" and "Rules" pages
+- Admin panel for all models
 
-## Стек
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Python 3.9+, Django 3.2 |
+| Database | SQLite (default) |
+| Frontend | django-bootstrap5 |
+| Image handling | Pillow |
+| Testing | pytest, Django test runner, coverage, flake8 |
+
+## Requirements
 
 - Python 3.9+
-- Django 3.2
-- django-bootstrap5
-- Pillow (работа с изображениями)
-- SQLite (БД по умолчанию)
-- pytest + Django test runner, coverage, flake8
+- pip
 
-## Структура
-
-```
-blogicum/                # каталог Django-проекта (рядом с manage.py)
-├── blog/                # основное приложение: посты, комментарии, профили
-│   ├── models.py        # Category, Location, Post, Comment + менеджер PostQuerySet
-│   ├── views.py         # вьюхи блога
-│   ├── forms.py         # формы постов, комментариев, профиля, регистрации
-│   ├── admin.py         # настройки админки
-│   ├── urls.py
-│   └── tests/           # тесты приложения (модели, формы, вьюхи)
-├── pages/               # статичные страницы и обработчики ошибок + tests.py
-├── blogicum/            # настройки проекта (settings, urls, wsgi/asgi)
-├── templates/           # HTML-шаблоны
-├── static/              # статика (css, изображения)
-└── manage.py
-
-# на уровень выше (в корне репозитория):
-# requirements.txt, setup.cfg, pytest.ini, tests/ (приёмочные тесты)
-```
-
-## Установка и запуск
-
-Команды выполняются из корня репозитория, если не указано иное.
+## Installation
 
 ```bash
-# 1. Клонировать репозиторий
+# Clone the repository
 git clone <repository-url>
 cd <repository-dir>
 
-# 2. Создать и активировать виртуальное окружение
+# Create and activate a virtual environment
 python -m venv .venv
-source .venv/Scripts/activate     # Windows (Git Bash)
-# source .venv/bin/activate       # Linux / macOS
+source .venv/bin/activate        # Linux / macOS
+source .venv/Scripts/activate    # Windows (Git Bash)
 
-# 3. Установить зависимости
+# Install dependencies
 pip install -r requirements.txt
 
-# 4. Применить миграции и запустить сервер
+# Apply migrations and run the development server
 cd blogicum
 python manage.py migrate
 python manage.py runserver
 ```
 
-Опционально создать суперпользователя для админки:
+Optionally, create a superuser for the admin panel:
 
 ```bash
 python manage.py createsuperuser
 ```
 
-После запуска сайт доступен по адресу http://127.0.0.1:8000/, админ-панель —
-http://127.0.0.1:8000/admin/.
+The application will be available at `http://127.0.0.1:8000/`, the admin panel at `http://127.0.0.1:8000/admin/`.
 
-## Переменные окружения
+## Environment Variables
 
-Чувствительные настройки читаются из окружения (есть значения по умолчанию для
-локальной разработки):
+Sensitive settings are read from the environment (defaults are provided for local development):
 
-| Переменная      | Назначение                          | По умолчанию          |
-|-----------------|-------------------------------------|-----------------------|
-| `SECRET_KEY`    | секретный ключ Django               | dev-ключ              |
-| `DEBUG`         | режим отладки (`true`/`false`)      | `true`                |
-| `ALLOWED_HOSTS` | список хостов через запятую         | `localhost,127.0.0.1` |
+| Variable | Description | Default |
+|---|---|---|
+| `SECRET_KEY` | Django secret key | insecure dev key |
+| `DEBUG` | Enable debug mode (`true`/`false`) | `true` |
+| `ALLOWED_HOSTS` | Comma-separated list of allowed hosts | `localhost,127.0.0.1` |
 
-Письма (например, восстановление пароля) в режиме разработки сохраняются в
-файлы каталога `sent_emails/`.
+In development mode, emails (e.g. password recovery) are saved as files in the `sent_emails/` directory.
 
-## Тестирование
+## Running Tests
 
-Собственный набор тестов приложения (модели, формы, вьюхи, страницы),
-покрытие — 100%:
+The project's own test suite covers models, forms, views, and pages at 100%:
 
 ```bash
-# из каталога blogicum/
+# From the blogicum/ directory
 python manage.py test
 
-# с отчётом о покрытии
+# With a coverage report
 coverage run --source='blog,pages' --omit='*/migrations/*,*/tests/*' \
     manage.py test blog pages
 coverage report -m
 ```
 
-Внешний приёмочный набор (pytest) запускается из корня репозитория:
+Run the external acceptance suite (pytest) from the repository root:
 
 ```bash
 pytest
 ```
 
-Проверка стиля кода:
+Check code style:
 
 ```bash
 flake8
 ```
+
+## Project Structure
+
+```
+blogicum/                # Django project directory (next to manage.py)
+├── blog/                # Core app: posts, comments, profiles
+│   ├── models.py        # Category, Location, Post, Comment + PostQuerySet manager
+│   ├── views.py         # Blog views
+│   ├── forms.py         # Post, comment, profile, and registration forms
+│   ├── admin.py         # Admin configuration
+│   ├── urls.py
+│   └── tests/           # App tests (models, forms, views)
+├── pages/               # Static pages and error handlers + tests.py
+├── blogicum/            # Project settings (settings, urls, wsgi/asgi)
+├── templates/           # HTML templates
+├── static/              # Static files (css, images)
+└── manage.py
+
+# Repository root:
+# requirements.txt, setup.cfg, pytest.ini, tests/ (acceptance tests)
+```
+
+## License
+
+[MIT](LICENSE)
